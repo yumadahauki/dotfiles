@@ -17,7 +17,7 @@ dbus-update-activation-environment --systemd \
 
 xsetroot -cursor_name left_ptr
 
-xwallpaper --zoom "$HOME/Pictures/IMG_0545.JPG"
+xwallpaper --daemon --zoom "$HOME/Pictures/IMG_0545.JPG" &
 
 fcitx5 -d &
 picom --config "$HOME/.config/picom/picom.conf" &
@@ -25,10 +25,14 @@ slstatus &
 
 (
     sleep 2
-    wpctl set-volume @DEFAULT_AUDIO_SINK@ 0%
-    wpctl set-mute @DEFAULT_AUDIO_SINK@ 0
+    wpctl set-volume @DEFAULT_AUDIO_SINK@ 100%
+    wpctl set-mute @DEFAULT_AUDIO_SINK@ 100
 ) &
 
 export GTK_THEME=Adwaita
+
+xrandr --output DP-1 --primary --mode 1920x1080 --pos 960x2160 --output DP-2 --mode 3840x2160 --pos 0x0
+
+[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources 
 
 exec "/usr/local/bin/dwm"
