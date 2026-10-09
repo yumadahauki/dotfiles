@@ -31,7 +31,7 @@ slstatus &
 
 export GTK_THEME=Adwaita
 
-xrandr --output DP-1 --primary --mode 1920x1080 --pos 960x2160 --output DP-2 --mode 3840x2160 --pos 0x0
+xrandr --output DP-1 --primary --mode 1920x1080 --rate 400 --pos 0x2160 --output DP-2 --mode 3840x2160 --rate 144 --pos 0x0
 
 [[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources 
 
