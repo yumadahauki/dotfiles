@@ -1,0 +1,40 @@
+#!/bin/sh
+
+export PATH="$HOME/.local/bin:$PATH"
+
+# Openbox / X11 session identity
+export XDG_SESSION_TYPE=x11
+export XDG_CURRENT_DESKTOP=Openbox
+export XDG_SESSION_DESKTOP=openbox
+export DESKTOP_SESSION=openbox
+
+# Gaming session: do not use Fcitx5 or a compositor.
+unset XMODIFIERS GTK_IM_MODULE QT_IM_MODULE
+pkill -x fcitx5 2>/dev/null || true
+pkill -x picom 2>/dev/null || true
+
+dbus-update-activation-environment --systemd \
+    DISPLAY XAUTHORITY DBUS_SESSION_BUS_ADDRESS \
+    XDG_SESSION_TYPE XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP DESKTOP_SESSION
+
+export GTK_THEME=Adwaita
+
+# Load X resources before creating the cursor.
+[ -f "$HOME/.Xresources" ] && xrdb -merge "$HOME/.Xresources"
+xsetroot -cursor_name left_ptr
+
+# Configure monitors before setting the wallpaper.
+xrandr \
+    --output DP-1 --primary --mode 1920x1080 --rate 400 --pos 1920x2160 \
+    --output DP-2 --mode 3840x2160 --rate 144 --pos 0x0
+
+xwallpaper --daemon --zoom "$HOME/Pictures/IMG_0545.JPG" &
+
+# Restore the preferred audio state after the session starts.
+(
+    sleep 2
+    wpctl set-volume @DEFAULT_AUDIO_SINK@ 100%
+    wpctl set-mute @DEFAULT_AUDIO_SINK@ 0
+) &
+
+exec openbox
