@@ -27,6 +27,7 @@ xwallpaper --daemon --zoom "$HOME/Pictures/IMG_0545.JPG" &
 fcitx5 -d &
 picom --config "$HOME/.config/picom/picom.conf" &
 slstatus &
+lxpolkit &
 
 (
     sleep 2
